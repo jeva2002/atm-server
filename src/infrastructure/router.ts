@@ -3,6 +3,7 @@ dotenv.config();
 import express, { Express } from 'express';
 import cors from 'cors';
 import { corsOptions } from '../config/cors';
+import cookieParser from 'cookie-parser';
 import adminRouter from './routes/admin';
 import authRouter from './routes/auth';
 
@@ -11,6 +12,7 @@ export const initializeServer = () => {
 
   app.use(cors(corsOptions));
   app.use(express.json());
+  app.use(cookieParser());
 
   app.use('/admin', adminRouter)
   app.use('/auth', authRouter);

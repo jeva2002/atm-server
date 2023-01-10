@@ -8,3 +8,9 @@ export interface UserInfo {
   birthday: Date;
   role: string;
 }
+
+export interface CurrentUser {
+  id: string;
+  cardNumber: string;
+  role: string;
+}

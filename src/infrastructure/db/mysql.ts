@@ -24,21 +24,22 @@ class MysqlConnection extends UseDB {
     );
   }
 
-  userExist(hashedPassword: string, securityCode: string): void {
-    //TODO falta verificar cuando no se encuentre el usuario.
-    this.connection.query(
-      `SELECT * FROM users_list WHERE cardNumber = '${hashedPassword}';`,
-      (error, results) => {
-        try {
+  userExist(cardNumber: string, securityCode: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT * FROM users_list WHERE cardNumber = '${cardNumber}';`,
+        (error, results) => {
           if (error) throw error;
           if (results[0]?.securityCode === securityCode) {
-
-          } else throw 'The security code or the card number are wrong';
-        } catch (error) {
-          console.log(error)
+            resolve({
+              id: results[0].id,
+              cardNumber: results[0].cardNumber,
+              role: results[0].role,
+            });
+          } else reject('The security code or the card number are wrong');
         }
-      }
-    );
+      );
+    });
   }
 
   createUser(userInfo: UserInfo) {
